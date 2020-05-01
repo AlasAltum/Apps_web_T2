@@ -39,7 +39,7 @@ $db->close();
 <div>
     <!-- Body of page -->
     <h1>Agregar datos de un médico</h1>
-    <form id="myform" method="post" action="/BackEnd/procesar_form_medico.php" onsubmit="return dataValidator();">
+    <form id="myform" method="post" action="./BackEnd/procesar_form_medico.php" onsubmit="return dataValidator();">
       <br>
       <!-- Label for Región -->
       <label for="region-medico" class="text-field">Región (*)</label>
