@@ -1,7 +1,6 @@
 <?php
 define( 'ROOT', getcwd() );
 require_once(ROOT.'/BackEnd/db_config.php');
-require_once(ROOT.'/BackEnd/consultas.php');
 $db = DbConfig::getConnection();
 //TODO: define this functions.
 //$regiones = getRegiones($db);
@@ -14,7 +13,7 @@ $db->close();
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8" /> <!-- Declaring enconding as UTF 8-->
-    <title> Tarea N° 1</title> <!-- Title in pestaña -->
+    <title> Tarea N° 2</title> <!-- Title in pestaña -->
     <link rel="stylesheet" type="text/css" media="screen"  href="tarea1.css" />    <!-- CSS: -->
     <script src="jquery-3.5.0.js"></script>  <!-- Importing JQUERY  -->
 </head>
@@ -39,7 +38,7 @@ $db->close();
 <div>
     <!-- Body of page -->
     <h1>Agregar datos de un médico</h1>
-    <form id="myform" method="post" action="./BackEnd/procesar_form_medico.php" onsubmit="return dataValidator();">
+    <form id="myform" enctype="multipart/form-data" method="post" action="./BackEnd/procesar_form_medico.php" onsubmit="return dataValidator();">
       <br>
       <!-- Label for Región -->
       <label for="region-medico" class="text-field">Región (*)</label>
@@ -73,7 +72,7 @@ $db->close();
       <!-- Label for Especialidades -->
       <label for="especialidades-medico" class="text-field">Especialidad del médico (*)</label>
       <br>
-      <select id="especialidades-medico" name="especialidades-medico" multiple >
+      <select name="especialidades-medico[]" id="especialidades-medico" multiple="multiple" size="5">
         <option value="1">Cardiología</option>
         <option value="2">Gastroenterología</option>
         <option value="3">Endocrinología</option>
@@ -108,7 +107,7 @@ $db->close();
       <label for="foto-medico" class="text-field">Foto médico</label>
       <br>
       <div class="input">
-        <input type="file" name="foto-medico[]" id="foto-medico" onchange="fotos_medicoValidation('foto-medico')" multiple="multiple" accept="image/*" >
+          <input type="file" name="foto-medico[]" id="foto-medico" onchange="fotos_medicoValidation('foto-medico')" multiple="multiple" value="" accept="image/*" >
       </div>
       
       <!-- Label for twitter contacto -->
@@ -139,6 +138,7 @@ $db->close();
       <button id="myButton" onclick="cleanForm();">Limpiar</button>
       </form>
       </div>
-      <script src="formValidator.js"></script>
+    <!--TODO: Change this to real, without _test-->
+      <script src="formValidator_test.js"></script>
 </body>
 </html>
