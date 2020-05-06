@@ -1,9 +1,6 @@
 <?php
 
 
-
-
-
 /**
  * Validación nombre con PHP.
  */
@@ -58,6 +55,7 @@ function pictureFormatValidation($picture){
 }
 
 function formatName($uploaddir, $original_filename){
+    //we take basename in order to prevent any attacks.
     $nombre_imagen = basename($original_filename);
     //agregamos tiempo a la imagen para que siempre sea distinto.
     $id = time();
@@ -66,7 +64,8 @@ function formatName($uploaddir, $original_filename){
 
 
 function pictureTransfer($files){
-    $ret = array();
+    $ret_paths = array();
+    $ret_filenames = array();
     if ($files) {
         // cada imagen será $files["foto-medico"]['name'][$key]
         foreach ($files["foto-medico"]["error"] as $key => $error) { //like a dictionary
@@ -75,13 +74,14 @@ function pictureTransfer($files){
                 $nueva_ruta_imagen = formatName("./../Files/fotos_medico/" , $files["foto-medico"]['name'][$key]);
                 $transfer = move_uploaded_file($files["foto-medico"]['tmp_name'][$key], $nueva_ruta_imagen);
                 if ($transfer) {
-                    $ret[] = $nueva_ruta_imagen; //Guardamos el nombre de la imagen
+                    $ret_paths[] = $nueva_ruta_imagen; //Guardamos el path de la imagen
+                    $ret_filenames[] = basename($nueva_ruta_imagen); //Guardamos el nombre de la imagen
                 } else {
                     return False;
                 }
             }
         }
-        return $ret;
+        return array($ret_paths, $ret_filenames);
     }
     return False;
 }
