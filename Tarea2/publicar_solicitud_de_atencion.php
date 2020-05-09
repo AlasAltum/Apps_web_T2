@@ -1,3 +1,13 @@
+<?php
+define( 'ROOT', getcwd() );
+require_once(ROOT.'/BackEnd/db_config.php');
+$db = DbConfig::getConnection();
+//TODO: define this functions.
+//$regiones = getRegiones($db);
+//$comunas = getComunas($db);
+$db->close();
+?>
+
 <!-- HTML5 -->
 <!DOCTYPE html>
 <html lang="es">
@@ -14,7 +24,7 @@
   <li><a class="active" href="inicio.html">Inicio</a></li>
   <li><a href="agregar_datos_de_medico.php">Agregar Datos de Médico</a></li>
   <li><a href="ver_medicos.html">Ver Médicos</a></li>
-  <li><a href="publicar_solicitud_de_atencion.html">Publicar Solicitud de Atención</a></li>
+  <li><a href="publicar_solicitud_de_atencion.php">Publicar Solicitud de Atención</a></li>
   <li><a href="ver_solicitudes_de_atencion.html">Ver Solicitudes de Atención</a></li>
 </ul>
 
@@ -22,7 +32,7 @@
   <!-- Body of page -->
   <h1>Publicar solicitud de atención</h1>
   <p>Para aquellas personas que necesitan atención médica.</p>
-  <form method="post" id="solicitud-form" action="#" onsubmit="solicitudeValidator();">
+  <form enctype="multipart/form-data" method="post" id="solicitud-form" action="./BackEnd/procesar_form_solicitud.php" onsubmit="return solicitudeValidator();">
     <br>
     <!-- Label for Nombre solicitante -->
     <label for="nombre-solicitante" class="text-field">Nombre del solicitante (*)</label>
@@ -74,10 +84,10 @@
   <!-- Para el ingreso de las fotos del médico, se debe solicitar un archivo y a continuación un botónque diga “agregar otra foto”. Al presionar dicho botón, debe aparecer un nuevo elemento “input”de tipo “file” que permita ingresar otro archivo, considerando un máximo de 5 archivo -->
   <br>
   <br>
-  <label for="archivos-solicitante" class="text-field">Archivos complementarios</label>
+  <label for="archivos-solicitante[]" class="text-field">Archivos complementarios</label>
   <br>
   <div class="input">
-    <input type="file" id="archivos-solicitante" name="archivos-solicitante" multiple="multiple" >
+    <input type="file" id="archivos-solicitante[]" name="archivos-solicitante[]" value="" multiple="multiple" >
   </div>
 
     
@@ -127,6 +137,6 @@
   <button id="myButton" onclick="cleanForm();">Limpiar</button>
   </form>
   </div>
-  <script src="formValidator_solicitante.js"></script>
+  <script src="formValidator_test_solicitud.js"></script>
 </body>
 </html>

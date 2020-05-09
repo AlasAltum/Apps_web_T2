@@ -3,7 +3,7 @@ define( 'ROOT', getcwd()."/../" );
 require_once("diccionarios.php");
 require_once("validaciones.php");
 require_once('db_config.php');
-
+require_once('file_processing.php');
 
 function limpiar($db, $str){
     return htmlspecialchars($db->real_escape_string($str));
@@ -45,43 +45,45 @@ function saveDoctorIntoDB($db, $nombre_medico, $experiencia_medico, $comuna_medi
     return false;
 }
 
-
 $errores = array();
 
-if(!checkComuna($_POST)){
+if(!checkComuna($_POST, 'comuna-medico')){
     $errores[] = "Comuna inválida.";
 }
 
-if(!checkName($_POST)){
+if(!checkName($_POST, 'nombre-medico')){
     $errores[] = "Nombre inválido.";
 }
 
-if(!checkExperiencia($_POST)){
+if(!checkExperiencia($_POST, 'experiencia-medico')){
     $errores[] = "Experiencia inválida.";
 }
 
-if(!checkEspecialidades($_POST)){
+if(!checkEspecialidades($_POST, 'especialidades-medico')){
     $errores[] = "Especialidades inválidas.";
 }
 
-if(!checkTwitter($_POST)){
+if(!checkTwitter($_POST, 'twitter-medico')){
     $errores[] = "Twitter inválido.";
 }
 
-if(!checkEmail($_POST)){
+if(!checkEmail($_POST, 'email-medico')){
     $errores[] = "Email inválido.";
 }
 
-if(!checkFoto($_FILES)){
+if(!checkFoto($_FILES, 'foto-medico')){
     $errores[] = "Archivo de foto subido no válido.";
 }
+
+if (!checkNumber($_POST, 'celular-medico')){
+    $errores[] = "Número equivocado.";
+}
+
 if(count($errores)>0){//Si el arreglo $errores tiene elementos, debemos mostrar el error.
     header("Location: agregar_datos_de_medico.php?errores=".implode($errores, "<br>"));//Redirigimos al formulario inicio con los errores encontrados
     return; //No dejamos que continue la ejecución
 }
 
-//Si llegamos aqui, las validaciones pasaron
-//TODO: Create getRegion and getComuna in dictionary
 $region_medico = getRegion($_POST['region-medico']);
 $nombre_comuna = $_POST['comuna-medico'];
 $comuna_medico = getComuna($_POST['comuna-medico'], $region_medico);
@@ -92,7 +94,7 @@ $twitter_medico = $_POST['twitter-medico'];
 $email_medico = $_POST['email-medico'];
 $celular_medico = $_POST['celular-medico'];
 
-$fotos_medicos = pictureTransfer($_FILES); //the name of the pictures.
+$fotos_medicos = fileTransfer($_FILES, 'foto-medico', 'fotos_medicos'); //the name of the pictures.
 $rutas_fotos_medicos = $fotos_medicos[0];
 $nombres_fotos_medicos = $fotos_medicos[1];
 //Guardamos en base de datos
@@ -110,13 +112,22 @@ $db->close();
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title> Tarea N° 2</title> <!-- Title in pestaña -->
-        <link rel="stylesheet" type="text/css" media="screen"  href="tarea1.css" />    <!-- CSS: -->
-        <script src="jquery-3.5.0.js"></script>  <!-- Importing JQUERY  -->
+        <link rel="stylesheet" type="text/css" media="screen"  href="../tarea1.css" />    <!-- CSS: -->
+        <script src="../jquery-3.5.0.js"></script>  <!-- Importing JQUERY  -->
     </head>
 
 </head>
 
 <body>
+
+<ul class="topnav">
+    <li><a class="active" href="inicio.html">Inicio</a></li>
+    <li><a href="../agregar_datos_de_medico.php">Agregar Datos de Médico</a></li>
+    <li><a href="../ver_medicos.html">Ver Médicos</a></li>
+    <li><a href="../publicar_solicitud_de_atencion.php">Publicar Solicitud de Atención</a></li>
+    <li><a href="../ver_solicitudes_de_atencion.html">Ver Solicitudes de Atención</a></li>
+</ul>
+
 <h1>Confirmación: Médico guardado</h1>
 <p>
     Señor <?php echo $nombre_medico; ?>,<br />

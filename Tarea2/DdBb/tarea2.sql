@@ -101,7 +101,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `tarea2`.`foto_medico`
+-- Table `tarea2`.`fotos_medicos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tarea2`.`foto_medico` (
   `id` INT NOT NULL AUTO_INCREMENT,

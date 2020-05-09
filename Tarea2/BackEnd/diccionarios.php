@@ -15,6 +15,21 @@ function prepareDoctorStatement($db, $nombre_medico, $experiencia_medico, $comun
     return $stmt;
 }
 
+function prepareSolicitudeStatement($db, $nombre_solicitante, $especialidad_solicitante, $descripcion_solicitante, $twitter_solicitante, $email_solicitante, $celular_solicitante, $comuna_solicitante){
+    //prepare statement
+    //inserting a doctor into the database for solicitud atención
+    $stmt = $db->prepare("INSERT INTO solicitud_atencion (nombre_solicitante, especialidad_id, sintomas, twitter, email, celular, comuna_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $nombre_bd = limpiar($db, $nombre_solicitante);
+    $especialidad_bd = limpiar($db, $especialidad_solicitante);
+    $descripcion_bd = limpiar($db, $descripcion_solicitante);
+    $twitter_bd = limpiar($db, $twitter_solicitante);
+    $comuna_bd = limpiar($db, $comuna_solicitante);
+    $email_bd = limpiar($db, $email_solicitante);
+    $celular_bd = limpiar($db, $celular_solicitante);
+    $stmt->bind_param("sisssdi", $nombre_bd, $especialidad_bd, $descripcion_bd, $twitter_bd, $email_bd, $celular_bd, $comuna_bd);
+    return $stmt;
+}
+
 
 /*
  * Retorna arreglo con los ids y descripciones.
@@ -29,11 +44,23 @@ function getEspecialidades($db){
     return $ret;
 }
 
+function mapEspecialidad($table, $id){
+    $ret = $table[$id]['descripcion'];
+    return $ret;
+}
+
 function mapEspecialidades($table, $ids){
     $ret = array();
-    foreach ($ids as $esp_id){
-        $esp_id = $esp_id - 1;
-        $ret[] = $table[$esp_id]['descripcion'];
+    if (is_array($ids[0])){ //si es un arreglo de la forma (medico_id, especialidad_id)
+        foreach ($ids as $esp) {
+            $esp_id = $esp['especialidad_id'];
+            $ret[] = $table[$esp_id + 1]['descripcion'];
+        }
+    } else {
+        foreach ($ids as $esp_id) {
+            $esp_id = $esp_id;
+            $ret[] = $table[$esp_id + 1]['descripcion'];
+        }
     }
     return $ret;
 }
@@ -118,6 +145,27 @@ function getComuna($name, $region_id){
         }
     }
     return False;
+}
+
+function getDoctors($db, $offset){
+    //get the last 5 doctors
+    $sql = "SELECT id, nombre, experiencia, comuna_id, twitter, email, celular FROM medico ORDER BY id DESC LIMIT 5 OFFSET {$offset}";
+    $result = $db->query($sql);
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        $res[] = $row;
+    }
+    return $res;
+}
+
+function getEspecialidadesFromDoctorId($db, $medico_id){
+    $sql = "SELECT * FROM `especialidad_medico` WHERE medico_id = {$medico_id}";
+    $result = $db->query($sql);
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        $res[] = $row;
+    }
+    return $res;
 }
 
 

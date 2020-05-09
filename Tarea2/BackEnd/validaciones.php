@@ -3,57 +3,100 @@
 
 /**
  * Validación nombre con PHP.
+ * @param $post
+ * @param $html_field
+ * @return bool
  */
-function checkName($post){
-	if(isset($post['nombre-medico'])){
+function checkName($post, $html_field): bool
+{
+	if(isset($post[$html_field])){
 		$regexp = "/^[A-Za-záéíóú\ ]+$/";
-		if(preg_match($regexp, $post['nombre-medico'])){
-			return true;
+		if(preg_match($regexp, $post[$html_field])){
+			return True;
 		}
 	}
-	return false;
-}
-function checkComuna($post){
-    if (isset($post['comuna-medico'])){
-        if ($post['comuna-medico']){
-            return true;
-        }
-    }
-    return false;
+	return False;
 }
 
-function checkExperiencia($post){
-    if (isset($post['experiencia-medico'])){
-        if (strlen($post['experiencia-medico']) == 0){ //case no description
-            return true;
-        }
-        if(strlen($post['experiencia-medico']) > 0 && strlen($post['experiencia-medico']) < 200){
-            return true;
+/**
+ * @param $post
+ * @param $html_field
+ * @return bool
+ */
+function checkComuna($post, $html_field){
+    if (isset($post[$html_field])){
+        if ($post[$html_field]){
+            return True;
         }
     }
     return False;
 }
 
-function checkEspecialidades($post) {
-    if (isset($post['especialidades-medico'])) {
-        return true;
+/**
+ * @param $post
+ * @return bool
+ */
+function checkExperiencia($post, $html_field){
+    if (isset($post[$html_field])){
+        if (strlen($post[$html_field]) == 0){ //case no description
+            return True;
         }
-    //TODO: Check if an option was given.
-    return false;
+        if(strlen($post[$html_field]) > 0 && strlen($post[$html_field]) < 500){ //max 500 chars
+            return True;
+        }
+    }
+    return False;
 }
 
+/**
+ * @param $post
+ * @return bool
+ */
+function checkEspecialidades($post, $html_field) {
+    if (isset($post[$html_field])) {
+        return True;
+        }
+    return False;
+}
+
+
+/**
+ * @param $picture
+ * @return bool
+ */
 function pictureFormatValidation($picture){
     $tamano = getimagesize($picture);
     $fp = fopen($picture, "rb");
     if ($tamano && $fp) {
         $pattern = '/(png|gif|jpeg|jpg|bmp)$/';
-        if (preg_match($pattern, $tamano["mime"]) == true){
+        if (preg_match($pattern, $tamano["mime"]) == True){
             return True;
         }
     }
-    return false;
+    return False;
 }
 
+/**
+ * @param $file that should be a document.
+ * @return bool
+ */
+function formatValidation($file){
+    $tamano = mime_content_type($file);
+    if ($tamano) {
+        $pattern = '/(docx|doc|pdf|png|gif|jpeg|jpg|bmp)$/';
+        if (preg_match($pattern, $tamano) == True){
+            return True;
+        }
+    }
+    return False;
+}
+
+
+/**
+ * @param $uploaddir
+ * @param $original_filename
+ * @return string
+ */
 function formatName($uploaddir, $original_filename){
     //we take basename in order to prevent any attacks.
     $nombre_imagen = basename($original_filename);
@@ -63,60 +106,82 @@ function formatName($uploaddir, $original_filename){
 }
 
 
-function pictureTransfer($files){
-    $ret_paths = array();
-    $ret_filenames = array();
+
+//This checks the foto and
+/**
+ * @param $files
+ * @return bool
+ */
+function checkFiles($files, $html_field){
     if ($files) {
-        // cada imagen será $files["foto-medico"]['name'][$key]
-        foreach ($files["foto-medico"]["error"] as $key => $error) { //like a dictionary
+        foreach ($files[$html_field]["error"] as $key => $error) { //like a dictionary
             if ($error == UPLOAD_ERR_OK) {
-                //validamos que el tipo sea una imagen
-                $nueva_ruta_imagen = formatName("./../Files/fotos_medico/" , $files["foto-medico"]['name'][$key]);
-                $transfer = move_uploaded_file($files["foto-medico"]['tmp_name'][$key], $nueva_ruta_imagen);
-                if ($transfer) {
-                    $ret_paths[] = $nueva_ruta_imagen; //Guardamos el path de la imagen
-                    $ret_filenames[] = basename($nueva_ruta_imagen); //Guardamos el nombre de la imagen
-                } else {
+                //validamos tipo
+                if (!formatValidation($files[$html_field]['tmp_name'][$key])) {
                     return False;
                 }
             }
         }
-        return array($ret_paths, $ret_filenames);
+        return True;
     }
     return False;
 }
 
-
 //This checks the foto and
-function checkFoto($files){
+/**
+ * @param $files
+ * @return bool
+ */
+function checkFoto($files, $html_field){
     if ($files) {
-        foreach ($files["foto-medico"]["error"] as $key => $error) { //like a dictionary
+        foreach ($files[$html_field]["error"] as $key => $error) { //like a dictionary
             if ($error == UPLOAD_ERR_OK) {
                 //validamos tipo
-                if (!pictureFormatValidation($files["foto-medico"]['tmp_name'][$key])) {
+                if (!pictureFormatValidation($files[$html_field]['tmp_name'][$key])) {
                     return False;
                 }
             }
         }
-        return true;
+        return True;
     }
-    return false;
+    return False;
 }
 
-function checkTwitter($post){
-    if (isset($post['twitter-medico'])) {
-        return true;
+/**
+ * @param $post
+ * @return bool
+ */
+function checkTwitter($post, $html_field){
+    if (isset($post[$html_field])) {
+        $pattern = "/@[0-9a-zA-z]+/";
+        if (preg_match($pattern, $post[$html_field]) == True && strlen($post[$html_field]) < 20){
+            return True;
+        }
     }
-    return false;
+    return False;
 }
 
-function checkEmail($post){
-    if (isset($post['email-medico'])){
-        return true;
+/**
+ * @param $post
+ * @return bool
+ */
+function checkEmail($post, $html_field){
+    if (isset($post[$html_field])){
+        if (filter_var($post[$html_field], FILTER_VALIDATE_EMAIL)) {
+            return True;
+        }
     }
-    return false;
+    return False;
 }
 
-
+function checkNumber($post, $html_field){
+    if (isset($post[$html_field])) {
+        $pattern = "/[0-9\+ ]+/";
+        if (preg_match($pattern, $post[$html_field]) == True && strlen($post[$html_field]) < 20) {
+            return True;
+        }
+    }
+    return False;
+}
 
 ?>
