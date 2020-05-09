@@ -45,7 +45,7 @@ function getEspecialidades($db){
 }
 
 function mapEspecialidad($table, $id){
-    $ret = $table[$id]['descripcion'];
+    $ret = $table[$id - 1]['descripcion'];
     return $ret;
 }
 
@@ -54,12 +54,11 @@ function mapEspecialidades($table, $ids){
     if (is_array($ids[0])){ //si es un arreglo de la forma (medico_id, especialidad_id)
         foreach ($ids as $esp) {
             $esp_id = $esp['especialidad_id'];
-            $ret[] = $table[$esp_id + 1]['descripcion'];
+            $ret[] = $table[$esp_id]['descripcion'];
         }
     } else {
         foreach ($ids as $esp_id) {
-            $esp_id = $esp_id;
-            $ret[] = $table[$esp_id + 1]['descripcion'];
+            $ret[] = $table[$esp_id]['descripcion'];
         }
     }
     return $ret;
@@ -93,6 +92,19 @@ function getRegion($name){
         }
     }
     return false;
+}
+
+/*
+Recibe la base de datos y retorna las comunas
+*/
+function getRegionWithId($db, $regionid){
+    $sql = "SELECT id, nombre FROM region WHERE id = {$regionid}";
+    $result = $db->query($sql);
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        $res[] = $row;
+    }
+    return $res;
 }
 
 /*
@@ -147,7 +159,8 @@ function getComuna($name, $region_id){
     return False;
 }
 
-function getDoctors($db, $offset){
+function getDoctors($db, $offset)
+{
     //get the last 5 doctors
     $sql = "SELECT id, nombre, experiencia, comuna_id, twitter, email, celular FROM medico ORDER BY id DESC LIMIT 5 OFFSET {$offset}";
     $result = $db->query($sql);
@@ -158,8 +171,67 @@ function getDoctors($db, $offset){
     return $res;
 }
 
-function getEspecialidadesFromDoctorId($db, $medico_id){
-    $sql = "SELECT * FROM `especialidad_medico` WHERE medico_id = {$medico_id}";
+function getDoctorWithId($db, $id)
+{
+    //get the last 5 doctors
+    $sql = "SELECT id, nombre, experiencia, comuna_id, twitter, email, celular FROM medico WHERE id = {$id}";
+    $result = $db->query($sql);
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        $res[] = $row;
+    }
+    return $res;
+}
+
+
+function getSolicitudes($db, $offset)
+{
+    //get the last 5 doctors
+    $sql = "SELECT id, nombre_solicitante, especialidad_id, sintomas, twitter, email, celular, comuna_id FROM solicitud_atencion ORDER BY id DESC LIMIT 5 OFFSET {$offset}";
+    $result = $db->query($sql);
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        $res[] = $row;
+    }
+    return $res;
+}
+
+function getEspecialidadesFromDoctorId($db, $medico_id)
+{
+    $sql = "SELECT especialidad_id FROM `especialidad_medico` WHERE medico_id = {$medico_id}";
+    $result = $db->query($sql);
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        $res[] = $row;
+    }
+    return $res;
+}
+
+function getRegionIdFromComunaId($db, $comunaid)
+{
+    $sql = "SELECT region_id FROM comuna WHERE id = {$comunaid}";
+    $result = $db->query($sql);
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        $res[] = $row;
+    }
+    return $res;
+}
+
+function getRutasFotosGivenMedicoId($db, $medicoid)
+{
+    $sql = "SELECT nombre_archivo FROM foto_medico WHERE medico_id = {$medicoid}";
+    $result = $db->query($sql);
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        $res[] = $row;
+    }
+    return $res;
+}
+
+function getRutasArchivosGivenSolicitudId($db, $solicitudid)
+{
+    $sql = "WHERE id = {$solicitudid}";
     $result = $db->query($sql);
     $res = array();
     while ($row = $result->fetch_assoc()) {

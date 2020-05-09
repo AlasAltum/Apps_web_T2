@@ -108,30 +108,31 @@ $db->close();
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title> Tarea N° 2</title> <!-- Title in pestaña -->
-        <link rel="stylesheet" type="text/css" media="screen"  href="../tarea1.css" />    <!-- CSS: -->
+        <link rel="stylesheet" type="text/css" media="screen" href="../tarea1.css"/>    <!-- CSS: -->
         <script src="../jquery-3.5.0.js"></script>  <!-- Importing JQUERY  -->
     </head>
 
-<body>
-<ul class="topnav">
-    <li><a class="active" href="inicio.html">Inicio</a></li>
-    <li><a href="../agregar_datos_de_medico.php">Agregar Datos de Médico</a></li>
-    <li><a href="../ver_medicos.html">Ver Médicos</a></li>
-    <li><a href="../publicar_solicitud_de_atencion.php">Publicar Solicitud de Atención</a></li>
-    <li><a href="../ver_solicitudes_de_atencion.html">Ver Solicitudes de Atención</a></li>
-</ul>
+    <body>
+    <ul class="topnav">
+        <li><a class="active" href="inicio.html">Inicio</a></li>
+        <li><a href="../agregar_datos_de_medico.php">Agregar Datos de Médico</a></li>
+        <li><a href="../ver_medicos.php">Ver Médicos</a></li>
+        <li><a href="../publicar_solicitud_de_atencion.php">Publicar Solicitud de Atención</a></li>
+        <li><a href="../ver_solicitudes_de_atencion.php">Ver Solicitudes de Atención</a></li>
+    </ul>
 
 
-<h1>Confirmación: Solicitud guardada</h1>
-<p>
-    Señor <?php echo $nombre_solicitante; ?>,<br />
+    <h1>Confirmación: Solicitud guardada</h1>
+    <p>
+        <?php echo $nombre_solicitante; ?>,<br/>
 
-    Hemos agregado su información como solicitante de un médico con especialiad en: <?php echo($nombre_especialidad); ?>.
-    <br>
-    Fue inscrito en la comuna de <?php echo (getComunaFromId($comuna_solicitud)); ?>.
-    <br>
-    Fue anotado  con el twitter <?php echo $twitter_solicitante; ?>.
-    <br>
-    ¡Gracias por su servicio!
-</body>
+        Hemos agregado su información como solicitante de un médico con especialiad
+        en: <?php echo($nombre_especialidad); ?>.
+        <br>
+        Con inscripción en la comuna de <?php echo(getComunaFromId($comuna_solicitud)); ?>.
+        <br>
+        Bajo el twitter <?php echo $twitter_solicitante; ?>.
+        <br>
+        ¡Gracias por preferirnos!
+    </body>
 </html>

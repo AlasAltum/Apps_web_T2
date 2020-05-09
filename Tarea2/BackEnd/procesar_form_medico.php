@@ -97,8 +97,7 @@ $celular_medico = $_POST['celular-medico'];
 $fotos_medicos = fileTransfer($_FILES, 'foto-medico', 'fotos_medicos'); //the name of the pictures.
 $rutas_fotos_medicos = $fotos_medicos[0];
 $nombres_fotos_medicos = $fotos_medicos[1];
-//Guardamos en base de datos
-//TODO: Transform iquique into number
+
 $db = DbConfig::getConnection();
 $nombres_especialidades = mapEspecialidades(getEspecialidades($db), $especialidades_medico);
 $res = saveDoctorIntoDB($db, $nombre_medico, $experiencia_medico, $comuna_medico, $twitter_medico, $email_medico, $celular_medico, $especialidades_medico, $rutas_fotos_medicos, $nombres_fotos_medicos);
@@ -123,20 +122,21 @@ $db->close();
 <ul class="topnav">
     <li><a class="active" href="inicio.html">Inicio</a></li>
     <li><a href="../agregar_datos_de_medico.php">Agregar Datos de Médico</a></li>
-    <li><a href="../ver_medicos.html">Ver Médicos</a></li>
+    <li><a href="../ver_medicos.php">Ver Médicos</a></li>
     <li><a href="../publicar_solicitud_de_atencion.php">Publicar Solicitud de Atención</a></li>
-    <li><a href="../ver_solicitudes_de_atencion.html">Ver Solicitudes de Atención</a></li>
+    <li><a href="../ver_solicitudes_de_atencion.php">Ver Solicitudes de Atención</a></li>
 </ul>
 
 <h1>Confirmación: Médico guardado</h1>
 <p>
-    Señor <?php echo $nombre_medico; ?>,<br />
+    <?php echo $nombre_medico; ?>,<br/>
 
-    Hemos agregado su información como médico con especialiades en: <?php echo ''.implode(', ', $nombres_especialidades).''; ?>.
+    Hemos agregado su información como médico con especialiades
+    en: <?php echo '' . implode(', ', $nombres_especialidades) . ''; ?>.
     <br>
-    Fue inscrito en la comuna de <?php echo (getComunaFromId($comuna_medico)); ?>.
+    Con inscripción en la comuna de <?php echo(getComunaFromId($comuna_medico)); ?>.
     <br>
-    Fue anotado  con el twitter <?php echo $twitter_medico; ?>.
+    Bajo el twitter <?php echo $twitter_medico; ?>.
     <br>
     ¡Gracias por su servicio!
 </body>
