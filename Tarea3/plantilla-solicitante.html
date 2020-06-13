@@ -1,10 +1,9 @@
+<!-- Template solicitanteV -->
 <!-- HTML5 -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8" /> <!-- Declaring enconding as UTF 8-->
-    <title> Tarea N° 2</title> <!-- Title in pestaña -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title> Tarea N° 2</title> <!-- Title in pestaña -->
     <link rel="stylesheet" type="text/css" media="screen"  href="tarea1.css" />    <!-- CSS: -->
 
 </head>
@@ -21,9 +20,22 @@
 <div>
     
     <!-- Nombre solicitante -->
-    <h1>Ficha de solicitante: Vitervo Ruiz </h1>
+    <h1>Ficha de solicitante: &lt;nombre solicitante&gt; </h1>
     <br>
-    <table>
+    <!-- Style of table -->
+    <style>
+        table, th, td {
+          border: 2px solid white;
+          border-collapse: collapse;
+        }
+        th, td {
+        padding: 5px;
+        }
+        td {
+        text-align: center;
+        }
+    </style>
+    <table style="width:100%">
     <!-- intro row -->
         <tr>
           <th>Campo de información</th>
@@ -33,58 +45,58 @@
     <!-- Nombre row -->
         <tr>
             <th>Nombre del Solicitante</th>
-            <th>Vitervo Ruiz</th> 
+            <th>&lt;nombre solicitante&gt</th> 
         </tr>
     
     <!-- Especialidad row -->
     <tr>
         <th>Especialidad requerida</th>
-        <th>Geriatría</th> 
+        <th>&lt;Especialidades requeridas&gt</th> 
     </tr>
 
     <!-- Descripción row -->
     <tr>
         <th>Descripción de Síntomas</th>
-        <th>Tos seca, fiebre, dificultad para respirar.</th> 
+        <th>&lt;Descripción de síntomas&gt</th> 
     </tr>
 
     <!-- Archivos row -->
     <tr>
         <th>Archivos complementarios</th>
-        <th></th> 
+        <th>&lt;Lista de archivos complementarios&gt</th> 
     </tr>
 
     <!-- Twitter row -->
     <tr>
         <th>Twitter del solicitante</th>
-        <th></th> 
+        <th>&lt;Twitter solicitante&gt</th> 
     </tr>
 
     <!-- Email row -->
     <tr>
         <th>Email del solicitante</th>
-        <th>notengo@gmail.com</th> 
+        <th>&lt;Email solicitante&gt</th> 
     </tr>
 
     <!-- Número row -->
     <tr>
         <th>Número de celular del Solicitante</th>
-        <th>569 98654321</th> 
+        <th>&lt;Número de celular solicitante&gt</th> 
     </tr>
 
     <!-- Región row -->
     <tr>
         <th>Región del Solicitante</th>
-        <th>Región de Ñuble</th> 
+        <th>&lt;Región solicitante&gt</th> 
     </tr>
 
     <!-- Comuna row  -->
     <tr>
         <th>Comuna del Solicitante</th>
-        <th>San Nicolás</th> 
+        <th>&lt;Comuna del solicitante&gt</th> 
     </tr>
-
 </table>
+
 
 </div>
 </body>

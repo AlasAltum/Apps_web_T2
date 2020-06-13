@@ -2,9 +2,6 @@
 define( 'ROOT', getcwd() );
 require_once(ROOT.'/BackEnd/db_config.php');
 $db = DbConfig::getConnection();
-//TODO: define this functions.
-//$regiones = getRegiones($db);
-//$comunas = getComunas($db);
 $db->close();
 ?>
 <!-- HTML5 -->

@@ -179,6 +179,17 @@ function getDoctors($db, $offset)
     return $res;
 }
 
+function getListDoctors($db)
+{
+    $sql = "SELECT id, nombre FROM medico";
+    $result = $db->query($sql);
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        $res[] = $row;
+    }
+    return $res;
+}
+
 function getDoctorWithId($db, $id)
 {
     //get the last 5 doctors

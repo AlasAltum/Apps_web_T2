@@ -6,160 +6,41 @@ function notification_correct(){
 }
 
 function nameValidation(container) {
-    var nombre = document.getElementsByName(container)[0].value;
-    var name_regex = /^[a-zA-Z ñ]+$/;
-    if (nombre.length < 3){
-        alert("Nombre muy corto.");
-        return false;
-    }
-    if (nombre.length > 20) {
-        alert("Su nombre no debe exceder los 20 carácteres.");
-        return false;
-    }
-    if (!name_regex.test(nombre)) {
-        alert(("Su nombre solo puede contener letras."));
-        return false;
-    }
     return true;
 }
 
 function textValidation(container, maxlength){
-    var cont = document.getElementsByName(container)[0].value;
-    if (cont.length > 500){
-        alert("La descripción supera los 500 caracteres.");
-        return false;
-    }
     return true;
 }
 
 function especialidadesValidation(container){
-    var itemList = document.getElementById(container);
-    var selected = itemList.selectedOptions;
-    if (selected.length == 0){
-        window.alert("Debe especificar al menos una especialidad");
-        return false;
-    }
-    if (selected.length > 5){
-        window.alert("Demasiadas especialidades indicadas");
-        return false;
-    }
     return true;
-
 }
 
-//https://stackoverflow.com/questions/10105411/how-to-limit-the-maximum-files-chosen-when-using-multiple-file-input
-function fotos_solicitanteValidation(){
-    if (jQuery("#foto-solicitante")[0].files.length > 5) {
-        alert("No pueden ser más de 5 fotos");
-        return false;
-    }
-    if (jQuery("#foto-solicitante")[0].files.length == 0) {
-        alert("Se debe entregar al menos una foto");
-        return false;
-    }
-}
 
 function archivosValidation(){
-    if (jQuery("#archivos-solicitante")[0].files.length > 5) {
-        alert("No pueden ser más de 5 archivos");
-        return false;
-    }
     return true;
 }
 
 function twitterValidation(container){
-    var twitter_nick  = document.getElementsByName(container)[0].value;
-    var twitter_regex = /@[A-Za-z0-9_]+/;
-    if (twitter_nick.length == 0){
-        //case no twitter was given
         return true;
     }
-    if (!twitter_regex.test(twitter_nick)) {
-        alert("El twitter entregado no es válido. Recuerde agregar @ al inicio.");
-        return false;
-    }
-    if (twitter_nick.length < 3){
-        alert("El twitter entregado es demasiado corto.");
-        return false;
-    }
 
-    if (twitter_nick.length > 80) {
-        alert("El twitter entregado es muy largo.");
-        return false;
-    }
-    return true;
-}
 
 function emailValidation(container){
-    var email  = document.getElementsByName(container)[0].value;
-    var email_regex = /[A-Za-z0-9_]+@[A-Za-z0-9_]+.[A-Za-z0-9_]+/;
-    if (email.length > 80 || email.length < 3 || !email_regex.test(email)) {
-        alert("El email entregado no es válido");
-        return false;
-    }
     return true;
 }
 
 function celularValidation(container){
-    var celular  = document.getElementsByName(container)[0].value;
-    var number_regex = /[+ 0-9]+/;
-    if (celular.length == 0) {
-        //Case no number was given.
-        return true;
-    }
-    if (celular.length > 12 || celular.length < 7 || !number_regex.test(celular) ) {
-        alert("El número entregado no es válido");
-        return false;
-    }
     return true;
 }
 
 function regionValidation(container){
-    var region = jQuery('#'+container).val();
-    if (region == 'sin-region' || region == ''){
-        alert('Región no seleccionada');
-        return false;
-    }
-    var comuna = jQuery('#comuna-solicitante').val();
-    if (comuna == 'sin-comuna' || comuna == ''){
-        alert('Comuna no seleccionada');
-        return false;
-    }
     return true;
 }
 
 
 function solicitudeValidator(){
-    // Valida name.
-    if (!nameValidation("nombre-solicitante")){
-        return false;
-    }
-    // Validate symptoms description.
-    var maxlength = 500;
-    if (!textValidation("sintomas-solicitante", maxlength)){
-        return false;
-    }
-    // Validate files .
-    if (!archivosValidation()){
-        return false;
-    }
-    // Validate twitter solicitante.
-    if (!twitterValidation("twitter-solicitante")){
-        return false;
-    }
-    // Validate email 
-    if (!emailValidation("email-solicitante")){
-        return false;
-    }
-    // Validate número de contacto 
-    if (!celularValidation("celular-solicitante")){
-        return false;
-    }
-    // Validate region
-    if (!regionValidation("region-solicitante")){
-        return false;
-    }
-    notification_correct();
     return true;
 }
 
@@ -197,8 +78,8 @@ var RegionesYcomunas = {
             "comunas": ["Valparaíso", "Casablanca", "Concón", "Juan Fernández", "Puchuncaví", "Quintero", "Viña del Mar", "Isla de Pascua", "Los Andes", "Calle Larga", "Rinconada", "San Esteban", "La Ligua", "Cabildo", "Papudo", "Petorca", "Zapallar", "Quillota", "Calera", "Hijuelas", "La Cruz", "Nogales", "San Antonio", "Algarrobo", "Cartagena", "El Quisco", "El Tabo", "Santo Domingo", "San Felipe", "Catemu", "Llaillay", "Panquehue", "Putaendo", "Santa María", "Quilpué", "Limache", "Olmué", "Villa Alemana"]
         },
         {
-            "NombreRegion": "Región del Libertador Bernardo Ohiggins",
-            "comunas": ["Rancagua", "Codegua", "Coinco", "Coltauco", "Doñihue", "Graneros", "Las Cabras", "Machalí", "Malloa", "Mostazal", "Olivar", "Peumo", "Pichidegua", "Quinta de Tilcoco", "Rengo", "Requínoa", "San Vicente", "Pichilemu", "La Estrella", "Litueche", "Marchihue", "Navidad", "Paredones", "San Fernando", "Chépica", "Chimbarongo", "Lolol", "Nancagua", "Palmilla", "Peralillo", "Placilla", "Pumanque", "Santa Cruz"]
+            "NombreRegion": "Región del Libertador Gral. Bernardo O’Higgins",
+            "comunas": ["Rancagua (No existe)", "Codegua", "Coinco", "Coltauco", "Doñihue", "Graneros", "Las Cabras", "Machalí", "Malloa", "Mostazal", "Olivar", "Peumo", "Pichidegua", "Quinta de Tilcoco", "Rengo", "Requínoa", "San Vicente", "Pichilemu", "La Estrella", "Litueche", "Marchihue", "Navidad", "Paredones", "San Fernando", "Chépica", "Chimbarongo", "Lolol", "Nancagua", "Palmilla", "Peralillo", "Placilla", "Pumanque", "Santa Cruz"]
         },
         {
             "NombreRegion": "Región del Maule",
