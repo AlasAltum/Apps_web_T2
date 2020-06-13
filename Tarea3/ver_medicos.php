@@ -137,8 +137,8 @@
 
         //autocomplete
         $(".auto").autocomplete({
-            source: "search.php",
-            minLength: 1
+            source: "BackEnd/autocomplete_doc_names.php",
+            minLength: 3
         });
     });
 

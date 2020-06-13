@@ -1,6 +1,6 @@
 <?php
-require_once('BackEnd/db_config.php');
-require_once('BackEnd/diccionarios.php');
+require_once('db_config.php');
+require_once('diccionarios.php');
 $db = DbConfig::getConnection();
 $a = getListDoctors($db);
 
