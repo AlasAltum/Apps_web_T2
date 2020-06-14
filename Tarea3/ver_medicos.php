@@ -44,7 +44,6 @@
         $especialidades_medico = getEspecialidadesFromDoctorId($db, $doctor['id']);
         $especialidades_medico = mapEspecialidades($table_especialidades, $especialidades_medico);
 
-
         $nombre_medico = $doctor['nombre'];
         $comuna_id = getComunaFromId($doctor['comuna_id']);
         $twitter = $doctor['twitter'];
@@ -104,7 +103,7 @@
         <label for="fname">First name:</label>
         <input type="text" id="fname" name="fname" onkeyup="showHint(this.value)" class='auto'>
     </form>
-<!--     Here come suggestions-->
+<!--     Here are suggestions displayed-->
     <p>Suggestions: <span id="txtHint"></span></p>
 
     <table>
@@ -121,10 +120,6 @@
         }
         $db->close();
         ?>
-
-        <form action='' method='post'>
-            <p><label>Country:</label><input type='text' name='country' value='' class='auto'></p>
-        </form>
 
 
     </table>

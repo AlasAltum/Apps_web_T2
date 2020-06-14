@@ -202,6 +202,18 @@ function getDoctorWithId($db, $id)
     return $res;
 }
 
+function getListSolicitudes($db)
+{
+    //get the last 5 doctors
+    $sql = "SELECT id, nombre_solicitante FROM solicitud_atencion";
+    $result = $db->query($sql);
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        $res[] = $row;
+    }
+    return $res;
+}
+
 
 function getSolicitudes($db, $offset)
 {
