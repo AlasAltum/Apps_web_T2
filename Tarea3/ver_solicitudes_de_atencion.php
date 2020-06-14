@@ -87,6 +87,16 @@ if (array_key_exists('button1', $_POST)) {
                 xmlhttp.open("GET", "./BackEnd/gethint_solicitude.php?q=" + str, true);
                 xmlhttp.send();
             }
+            $(function() {
+                //autocomplete
+                $(".auto").autocomplete({
+                    source: "BackEnd/autocomplete_sol_names.php",
+                    minLength: 3,
+                    select: function (event, ui) {
+                        window.location = ui.item.url;
+                    }
+                });
+            });
         }
     </script>
 
@@ -136,17 +146,6 @@ if (array_key_exists('button1', $_POST)) {
 </div>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
-<script type="text/javascript">
-
-    $(function() {
-
-        //autocomplete
-        $(".auto").autocomplete({
-            source: "BackEnd/autocomplete_sol_names.php",
-            minLength: 3
-        });
-    });
-</script>
 </body>
 
 </html>

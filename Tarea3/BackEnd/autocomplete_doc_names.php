@@ -2,7 +2,7 @@
 require_once('db_config.php');
 require_once('diccionarios.php');
 $db = DbConfig::getConnection();
-$a = getListDoctors($db);
+$doctors_list = getListDoctors($db);
 
 // get the q parameter from URLxampp
 if (isset($_REQUEST["term"])){
@@ -15,12 +15,15 @@ if (isset($_REQUEST["term"])){
         $q = strtolower($q);
         $len = strlen($q);
         // Search for names that contain the written substring.
-        foreach ($a as $name) {
-            if (stristr($q, substr($name['nombre'], 0, $len))) {
-                    $doc_names[] = $name['nombre'];
+        foreach ($doctors_list as $doc) {
+            if (stristr($q, substr($doc['nombre'], 0, $len))) {
+                $id = $doc['id'];
+                $doc_names[] = array('value' => $doc['nombre'], 'url' => "./detalle_medico.php?id_medico={$id}");
+                    //
             }
         }
         // Show names with links that match the written substring.
+        $cogollo = json_encode($doc_names);
         echo(json_encode($doc_names));
 //        foreach ($doc_names as $key=> $value){
 //            $str = $doc_names[$key;

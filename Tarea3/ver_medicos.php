@@ -97,6 +97,17 @@
                 xmlhttp.open("GET", "./BackEnd/gethint.php?q=" + str, true);
                 xmlhttp.send();
             }
+
+            $(function() {
+                //autocomplete
+                $(".auto").autocomplete({
+                    source: "BackEnd/autocomplete_doc_names.php",
+                    minLength: 3,
+                    select: function (event, ui) {
+                        window.location = ui.item.url;
+                    }
+                });
+            });
         }
     </script>
     <form action="">
@@ -126,18 +137,7 @@
 </div>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
-<script type="text/javascript">
 
-    $(function() {
-
-        //autocomplete
-        $(".auto").autocomplete({
-            source: "BackEnd/autocomplete_doc_names.php",
-            minLength: 3
-        });
-    });
-
-</script>
 
 </body>
 </html>

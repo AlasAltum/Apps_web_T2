@@ -2,7 +2,7 @@
 require_once('db_config.php');
 require_once('diccionarios.php');
 $db = DbConfig::getConnection();
-$a = getListSolicitudes($db);
+$list_solicitudes = getListSolicitudes($db);
 
 // get the q parameter from URLxampp
 if (isset($_REQUEST["term"])){
@@ -14,9 +14,10 @@ if (isset($_REQUEST["term"])){
         $q = strtolower($q);
         $len = strlen($q);
         // Search for names that contain the written substring.
-        foreach ($a as $name) {
+        foreach ($list_solicitudes as $name) {
             if (stristr($q, substr($name['nombre_solicitante'], 0, $len))) {
-                    $sol_names[] = $name['nombre_solicitante'];
+                $id = $name['id'];
+                $sol_names[] = array('value' => $name['nombre_solicitante'], 'url' => "./detalle_solicitud.php?id_solicitante={$id}");;
             }
         }
         // Show names with links that match the written substring.
