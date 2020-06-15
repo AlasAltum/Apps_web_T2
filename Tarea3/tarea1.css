@@ -44,6 +44,10 @@ div.input{
   padding: 10px 8px;
 }
 
+div.mapid{
+  height: 180px;
+}
+
 input:valid {
   border: 2px solid black;
 }

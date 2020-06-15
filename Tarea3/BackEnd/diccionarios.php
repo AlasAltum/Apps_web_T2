@@ -260,9 +260,9 @@ function getRutasFotosGivenMedicoId($db, $medicoid)
     return $res;
 }
 
-function getArchivosGivenSolicitudId($db, $solicitudid)
+function getArchivosGivenSolicitudId($db, $solicitud_id)
 {
-    $sql = "SELECT * FROM archivo_solicitud WHERE solicitud_atencion_id = {$solicitudid}";
+    $sql = "SELECT * FROM archivo_solicitud WHERE solicitud_atencion_id = {$solicitud_id}";
     $result = $db->query($sql);
     $res = array();
     while ($row = $result->fetch_assoc()) {
@@ -281,6 +281,28 @@ function getSolicitanteWithId($db, $id)
         $res[] = $row;
     }
     return $res;
+}
+
+//1ro: Marcador por cada comuna con un médico o más:
+function getComunasWithDoctors($db)
+{
+    $sql = "SELECT id, comuna_id, nombre FROM medico";
+    $result = $db->query($sql);
+    $comunas_with_doctors = array();
+    while ($row = $result->fetch_assoc()) {
+        $comunas_with_doctors[] = $row;
+    }
+    $nombres_comunas = array();
+
+    foreach($comunas_with_doctors as $comuna){
+        $id = $comuna['comuna_id'];
+        $sql2 = "SELECT nombre FROM comuna where id={$id}";
+        $result = $db->query($sql2);
+        $row = $result->fetch_assoc();
+        $nombres_comunas[] = array('id_medico' => $comuna['id'],
+            'nombre_comuna' => $row['nombre']);
+    }
+    return $nombres_comunas;
 }
 
 

@@ -4,6 +4,7 @@ require_once(ROOT.'/BackEnd/db_config.php');
 $db = DbConfig::getConnection();
 $db->close();
 ?>
+
 <!-- HTML5 -->
 <!DOCTYPE html>
 <html lang="es">
