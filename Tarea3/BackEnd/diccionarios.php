@@ -121,7 +121,7 @@ function getComunas($db, $region_id){
 }
 
 /*
-Recibe la base de datos y retorna las comunas
+Recibe un id de comuna y retorna el nombre de esa comuna
 */
 function getComunaFromId($comuna_id){
     $db = dbconfig::getConnection();
@@ -201,6 +201,7 @@ function getDoctorWithId($db, $id)
     }
     return $res;
 }
+
 
 function getListSolicitudes($db)
 {
@@ -305,5 +306,15 @@ function getComunasWithDoctors($db)
     return $nombres_comunas;
 }
 
+function getDoctorsGivenComuna($db, $nombre_comuna)
+{
+    $sql = "SELECT m.id, m.nombre, m.twitter, m.email, m.celular, c.nombre as nombre_comuna FROM medico m, comuna c WHERE m.comuna_id = c.id AND c.nombre = '{$nombre_comuna}'";
+    $result = $db->query($sql);
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        $res[] = $row;
+    }
+    return $res;
+}
 
 ?>

@@ -49,26 +49,6 @@ else if(array_key_exists('button2', $_POST)) {
     $doctors = getDoctors($db, $offset);
 }
 
-$comunas_with_doctors = getComunasWithDoctors($db);
-$ubications = array();
-
-foreach($comunas_with_doctors as $comuna){
-    $ubications[] = $comuna['nombre_comuna'];
-}
-
-$string = file_get_contents("comunas_chile.json");
-$json_a = json_decode($string, true);
-
-$json_comuna_ubication = array(); //comuna, lat, long
-foreach($json_a as $comuna){
-    if (in_array($comuna['name'], $ubications)){
-        $json_comuna_ubication[] = array('comuna' => $comuna['name'],
-            'lat' => $comuna['lat'], 'long' => $comuna['lng'],
-            'num_doctors' => $num_doctors,
-            );
-    }
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -116,7 +96,7 @@ foreach($json_a as $comuna){
 
     <h2> Buscar por ubicación geográfica </h2>
     <div id="mapid" style="width: 600px; height: 400px; margin: auto; justify-content: center; align-items: center;">
-        Aquí sale el mapa? wii
+        Mapa con médicos.
     </div>
 
 
@@ -199,52 +179,7 @@ foreach($json_a as $comuna){
         });
     }
 </script>
+<script type="text/javascript" src="doctors_map.js"></script>
 
-<!--<script type="text/javascript" src="doctors_map.js"></script>-->
-<script>
-    var mymap = L.map('mapid').setView([-33.44, -70.67], 8);
-    var marker = L.marker([-33.44, -70.67]).addTo(mymap);
-    marker.bindPopup("<b>Santiago</b><br> <a href=\"publicar_solicitud_de_atencion.php\">Publicar Solicitud de Atención</a> ").openPopup();
-    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox/streets-v11',
-        tileSize: 512,
-        zoomOffset: -1
-    }).addTo(mymap);
-
-    var jqxhr = $.ajax( "get_comunas_with_doctors.php" )
-        .done(function() {
-            alert( "success" );
-        })
-        .fail(function() {
-            alert( "error" );
-        })
-        .always(function() {
-            alert( "complete" );
-        });
-
-    var json = <?php echo(json_encode($json_comuna_ubication));?>; //TODO: Change this to ajax.
-
-    for (i = 0; i < json.length; i++) {
-        console.log(json[i]['comuna']);
-        var lat = json[i]['lat'];
-        var long = json[i]['long'];
-        var marker = L.marker([lat, long]).addTo(mymap);
-        var str_comu = "<b>".concat(json[i]['comuna'],"</b> <br>");
-        marker.bindPopup(str_comu.concat(" <a href=\"publicar_solicitud_de_atencion.php\">Publicar Solicitud de Atención</a> ")).openPopup();
-        var popup = L.popup()
-            .setLatLng(L.latLng(lat, long))
-            .setContent('<p>Hello world!<br />This is a nice popup.</p>')
-            .openOn(mymap);
-
-    }
-    //console.log(json);
-    //alert(json);
-
-
-</script>
 </body>
 </html>
